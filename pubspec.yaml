@@ -19,6 +19,8 @@ dependencies:
   provider: ^6.1.2
   persistent_bottom_nav_bar: ^5.0.2
   shared_preferences: ^2.2.2
+  cached_network_image: ^3.3.1
+  flutter_cache_manager: ^3.3.1
 
 dev_dependencies:
   flutter_test:

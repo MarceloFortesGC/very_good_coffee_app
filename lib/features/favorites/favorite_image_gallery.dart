@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:very_good_coffee_app/features/favorites/favorite_image_cached.dart';
 import 'package:very_good_coffee_app/features/shared/animated_selection_indicator.dart';
 import 'package:very_good_coffee_app/features/favorites/favorites_detail.dart';
-import 'package:very_good_coffee_app/features/shared/image_with_loader.dart';
 
 class FavoriteImageGallery extends StatefulWidget {
   const FavoriteImageGallery({
@@ -54,7 +54,7 @@ class _FavoriteImageGalleryState extends State<FavoriteImageGallery> {
           children: [
             Hero(
               tag: widget.url,
-              child: ImageWithLoader(
+              child: FavoriteImageCached(
                 image: widget.url,
                 padding: EdgeInsets.all(widget.isSelected ? 8 : 0),
               ),

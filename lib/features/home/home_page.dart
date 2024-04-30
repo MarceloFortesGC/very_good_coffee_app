@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:very_good_coffee_app/features/shared/custom_colors.dart';
-import 'package:very_good_coffee_app/features/shared/image_with_loader.dart';
+import 'package:very_good_coffee_app/features/home/home_offline.dart';
+import 'package:very_good_coffee_app/features/home/home_online.dart';
 import 'package:very_good_coffee_app/features/home/home_service.dart';
 import 'package:very_good_coffee_app/features/shared/images_provider.dart';
 
@@ -14,94 +14,57 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _service = HomeService();
-  final _scrollController = ScrollController();
   bool _firstLoading = true;
-  bool _loading = true;
-
-  final _controller = PageController();
+  bool _hasConnection = true;
 
   void _getLikedImages() async {
     Provider.of<ImagesProvider>(context, listen: false).getLikedImagesOffline();
   }
 
   Future<void> _getData() async {
-    setState(() => _loading = true);
-    await _service.getListImageHomePage().then((value) {
-      _firstLoading = false;
-      _loading = false;
-      Provider.of<ImagesProvider>(context, listen: false).addImages(value);
+    final provider = Provider.of<ImagesProvider>(context, listen: false);
+
+    if (provider.images.isEmpty) {
+      _firstLoading = true;
       setState(() {});
-    });
-  }
-
-  void _onScroll() async {
-    if (!_loading &&
-        _scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent) {
-      setState(() {
-        _loading = true;
-      });
-
-      await _getData().then((value) {
-        setState(() {
-          _loading = false;
-        });
-      });
     }
-  }
 
-  void _onSave(String img) {
-    Provider.of<ImagesProvider>(context, listen: false).toggleLikedImage(img);
+    try {
+      await _service.getListImageHomePage().then((value) {
+        _hasConnection = true;
+        _firstLoading = false;
+        provider.addImages(value);
+        setState(() {});
+      });
+    } catch (e) {
+      _hasConnection = false;
+      _firstLoading = false;
+      setState(() {});
+    }
   }
 
   @override
   void initState() {
     _getLikedImages();
     super.initState();
-    _scrollController.addListener(_onScroll);
     _getData();
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<ImagesProvider>();
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: _firstLoading
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: PageView.builder(
-                controller: _controller,
-                itemCount: provider.images.length,
-                itemBuilder: (context, index) {
-                  return Stack(
-                    children: [
-                      Center(
-                          child:
-                              ImageWithLoader(image: provider.images[index])),
-                      Positioned(
-                        bottom: 32,
-                        right: 16,
-                        child: TextButton.icon(
-                          onPressed: () => _onSave(provider.images[index]),
-                          style: TextButton.styleFrom(
-                            backgroundColor: CustomColors.secondaryColor,
-                            foregroundColor: Colors.white,
-                          ),
-                          icon: Icon(
-                            provider.isLiked(provider.images[index])
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                          ),
-                          label: const Text("Save"),
-                        ),
-                      )
-                    ],
-                  );
-                },
-              ),
-            ),
+          : _hasConnection
+              ? const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: HomeOnline(),
+                )
+              : HomeOffline(
+                  onTapTryAgain: _getData,
+                  loading: _firstLoading,
+                ),
     );
   }
 }

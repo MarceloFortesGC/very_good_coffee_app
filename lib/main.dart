@@ -25,6 +25,8 @@ class MyApp extends StatelessWidget {
           elevation: 0,
         ),
         textTheme: const TextTheme(
+          bodySmall: TextStyle(color: Colors.white),
+          bodyMedium: TextStyle(color: Colors.white),
           titleLarge: TextStyle(color: Colors.white),
         ),
         progressIndicatorTheme:
@@ -33,8 +35,10 @@ class MyApp extends StatelessWidget {
         dividerTheme: const DividerThemeData(color: Colors.transparent),
         useMaterial3: true,
       ),
-      home: ChangeNotifierProvider(
-        create: (_) => ImagesProvider(),
+      home: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => ImagesProvider()),
+        ],
         child: const ApplicationBody(),
       ),
     );
