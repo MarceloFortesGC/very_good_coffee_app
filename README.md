@@ -1,16 +1,24 @@
-# very_good_coffee_app
+# Very Good Coffee App
 
-A new Flutter project.
+A Coffee Photos app made with [Flutter][flutter_link]!
 
-## Getting Started
+[Try it now][pinball_link] and [learn about how it's made][blog_link].
 
-This project is a starting point for a Flutter application.
+_Built by Marcelo Fortes for [Very Good Ventures][very_good_ventures_link] Technical Challenge_
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Getting Started 🚀
+Flutter version to this project: 
+```sh
+3.16.9
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+
+To run the desired project either use the launch configuration in VSCode/Android Studio or use the following commands:
+
+```sh
+$ flutter run
+```
+
+_* Very Good Coffee App was tested and develop to mobile._
