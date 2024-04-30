@@ -1,10 +1,8 @@
 # Very Good Coffee App
 
-A Coffee Photos app made with [Flutter][flutter_link]!
+A Coffee Photos app made with [Flutter]('https://flutter.dev/')!
 
-[Try it now][pinball_link] and [learn about how it's made][blog_link].
-
-_Built by Marcelo Fortes for [Very Good Ventures][very_good_ventures_link] Technical Challenge_
+_Built by Marcelo Fortes for [Very Good Ventures]('https://verygood.ventures/') Technical Challenge_
 
 ---
 
