@@ -50,6 +50,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _onSave(String img) {
+    Provider.of<ImagesProvider>(context, listen: false).toggleLikedImage(img);
+  }
+
   @override
   void initState() {
     _getLikedImages();
@@ -74,15 +78,13 @@ class _HomePageState extends State<HomePage> {
                   return Stack(
                     children: [
                       Center(
-                        child: ImageWithLoader(image: provider.images[index]),
-                      ),
+                          child:
+                              ImageWithLoader(image: provider.images[index])),
                       Positioned(
                         bottom: 32,
                         right: 16,
                         child: TextButton.icon(
-                          onPressed: () {
-                            provider.toggleLikedImage(provider.images[index]);
-                          },
+                          onPressed: () => _onSave(provider.images[index]),
                           style: TextButton.styleFrom(
                             backgroundColor: CustomColors.secondaryColor,
                             foregroundColor: Colors.white,

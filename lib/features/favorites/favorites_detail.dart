@@ -12,30 +12,33 @@ class FavoritesDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<ImagesProvider>();
     return Scaffold(
-      body: Hero(
-          tag: url,
-          child: Stack(
-            children: [
-              Center(child: ImageWithLoader(image: url)),
-              Positioned(
-                bottom: 32,
-                right: 16,
-                child: TextButton.icon(
-                  onPressed: () => provider.toggleLikedImage(url),
-                  style: TextButton.styleFrom(
-                    backgroundColor: CustomColors.secondaryColor,
-                    foregroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Hero(
+            tag: url,
+            child: Stack(
+              children: [
+                Center(child: ImageWithLoader(image: url)),
+                Positioned(
+                  bottom: 32,
+                  right: 16,
+                  child: TextButton.icon(
+                    onPressed: () => provider.toggleLikedImage(url),
+                    style: TextButton.styleFrom(
+                      backgroundColor: CustomColors.secondaryColor,
+                      foregroundColor: Colors.white,
+                    ),
+                    icon: Icon(
+                      provider.isLiked(url)
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                    ),
+                    label: const Text("Save"),
                   ),
-                  icon: Icon(
-                    provider.isLiked(url)
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                  ),
-                  label: const Text("Save"),
-                ),
-              )
-            ],
-          )),
+                )
+              ],
+            )),
+      ),
     );
   }
 }
