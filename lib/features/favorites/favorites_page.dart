@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:very_good_coffee_app/features/favorites/favorite_image_gallery.dart';
 import 'package:very_good_coffee_app/features/shared/animated_options.dart';
 import 'package:very_good_coffee_app/features/shared/custom_colors.dart';
-import 'package:very_good_coffee_app/features/shared/images_provider.dart';
+import 'package:very_good_coffee_app/features/providers/images_provider.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});

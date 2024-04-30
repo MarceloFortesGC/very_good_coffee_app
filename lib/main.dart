@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:very_good_coffee_app/features/body/application_body.dart';
+import 'package:very_good_coffee_app/features/providers/connection_provider.dart';
 import 'package:very_good_coffee_app/features/shared/custom_colors.dart';
-import 'package:very_good_coffee_app/features/shared/images_provider.dart';
+import 'package:very_good_coffee_app/features/providers/images_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,9 +26,18 @@ class MyApp extends StatelessWidget {
           elevation: 0,
         ),
         textTheme: const TextTheme(
-          bodySmall: TextStyle(color: Colors.white),
-          bodyMedium: TextStyle(color: Colors.white),
-          titleLarge: TextStyle(color: Colors.white),
+          bodySmall: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Celias',
+          ),
+          bodyMedium: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Celias',
+          ),
+          titleLarge: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Point Panther',
+          ),
         ),
         progressIndicatorTheme:
             const ProgressIndicatorThemeData(color: Colors.white),
@@ -38,6 +48,7 @@ class MyApp extends StatelessWidget {
       home: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => ImagesProvider()),
+          ChangeNotifierProvider(create: (_) => ConnectionProvider()),
         ],
         child: const ApplicationBody(),
       ),

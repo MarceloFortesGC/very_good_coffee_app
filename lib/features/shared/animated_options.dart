@@ -23,7 +23,7 @@ class AnimatedOptionsState extends State<AnimatedOptions>
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 100),
       vsync: this,
     );
 

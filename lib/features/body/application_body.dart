@@ -3,8 +3,9 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:very_good_coffee_app/features/favorites/favorites_page.dart';
 import 'package:very_good_coffee_app/features/home/home_page.dart';
+import 'package:very_good_coffee_app/features/providers/connection_provider.dart';
 import 'package:very_good_coffee_app/features/shared/custom_colors.dart';
-import 'package:very_good_coffee_app/features/shared/images_provider.dart';
+import 'package:very_good_coffee_app/features/providers/images_provider.dart';
 
 class ApplicationBody extends StatefulWidget {
   const ApplicationBody({super.key});
@@ -18,8 +19,8 @@ class _ApplicationBodyState extends State<ApplicationBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ImagesProvider>(
-      builder: (context, value, child) {
+    return Consumer2<ImagesProvider, ConnectionProvider>(
+      builder: (context, value, connection, child) {
         return PersistentTabView(
           context,
           controller: _controller,
@@ -37,7 +38,7 @@ class _ApplicationBodyState extends State<ApplicationBody> {
             ),
             PersistentBottomNavBarItem(
               icon: const Icon(Icons.favorite),
-              title: ("Favorites"),
+              title: ("Liked"),
               activeColorPrimary: CustomColors.secondaryColor,
               activeColorSecondary: Colors.white,
               inactiveColorPrimary: Colors.grey,

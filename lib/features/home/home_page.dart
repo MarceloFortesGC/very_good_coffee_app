@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:very_good_coffee_app/features/home/home_offline.dart';
 import 'package:very_good_coffee_app/features/home/home_online.dart';
 import 'package:very_good_coffee_app/features/home/home_service.dart';
-import 'package:very_good_coffee_app/features/shared/images_provider.dart';
+import 'package:very_good_coffee_app/features/providers/connection_provider.dart';
+import 'package:very_good_coffee_app/features/providers/images_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,29 +16,30 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _service = HomeService();
   bool _firstLoading = true;
-  bool _hasConnection = true;
 
   void _getLikedImages() async {
     Provider.of<ImagesProvider>(context, listen: false).getLikedImagesOffline();
   }
 
   Future<void> _getData() async {
-    final provider = Provider.of<ImagesProvider>(context, listen: false);
+    final imgProvider = Provider.of<ImagesProvider>(context, listen: false);
+    final connectionProvider =
+        Provider.of<ConnectionProvider>(context, listen: false);
 
-    if (provider.images.isEmpty) {
+    if (imgProvider.images.isEmpty) {
       _firstLoading = true;
       setState(() {});
     }
 
     try {
       await _service.getListImageHomePage().then((value) {
-        _hasConnection = true;
+        connectionProvider.setHasConnection = true;
         _firstLoading = false;
-        provider.addImages(value);
+        imgProvider.addImages(value);
         setState(() {});
       });
     } catch (e) {
-      _hasConnection = false;
+      connectionProvider.setHasConnection = false;
       _firstLoading = false;
       setState(() {});
     }
@@ -56,7 +58,7 @@ class _HomePageState extends State<HomePage> {
       color: Theme.of(context).scaffoldBackgroundColor,
       child: _firstLoading
           ? const Center(child: CircularProgressIndicator())
-          : _hasConnection
+          : context.watch<ConnectionProvider>().getHasConnection
               ? const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: HomeOnline(),
