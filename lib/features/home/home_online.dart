@@ -30,7 +30,7 @@ class _HomeOnlineState extends State<HomeOnline> {
 
     Overlay.of(context).insert(overlayEntry);
 
-    Timer(const Duration(seconds: 1), () => overlayEntry.remove());
+    Timer(const Duration(milliseconds: 1000), () => overlayEntry.remove());
   }
 
   Future<void> _cacheImage(String imageUrl) async {
@@ -70,10 +70,8 @@ class _HomeOnlineState extends State<HomeOnline> {
     }
   }
 
-  void _onSave(String img) async {
-    _showHeartAnimation(context);
+  void _onLike(String img) async {
     final provider = Provider.of<ImagesProvider>(context, listen: false);
-    provider.toggleLikedImage(img);
     _savingImg = true;
     setState(() {});
 
@@ -84,9 +82,15 @@ class _HomeOnlineState extends State<HomeOnline> {
         await _cacheImage(img);
       }
     } catch (e) {
-      provider.toggleLikedImage(img);
+      _savingImg = false;
+      setState(() {});
+      return;
     }
 
+    Future.delayed(Duration.zero).then((value) {
+      _showHeartAnimation(context);
+    });
+    provider.toggleLikedImage(img);
     _savingImg = false;
     setState(() {});
   }
@@ -112,35 +116,32 @@ class _HomeOnlineState extends State<HomeOnline> {
                     controller: controller,
                     itemCount: provider.images.length,
                     itemBuilder: (context, index) {
+                      final img = provider.images[index];
+
                       return Stack(
                         children: [
                           Center(
                             child: ImageWithLoader(
-                              image: provider.images[index],
-                              onDoubleTap: () =>
-                                  _onSave(provider.images[index]),
+                              image: img,
+                              onDoubleTap: () => _onLike(img),
                             ),
                           ),
                           Positioned(
                             bottom: 32,
                             right: 16,
                             child: TextButton.icon(
-                              onPressed: _savingImg
-                                  ? null
-                                  : () => _onSave(provider.images[index]),
+                              onPressed: _savingImg ? null : () => _onLike(img),
                               style: TextButton.styleFrom(
                                 backgroundColor: CustomColors.secondaryColor,
                                 foregroundColor: Colors.white,
                               ),
                               icon: Icon(
-                                provider.isLiked(provider.images[index])
+                                provider.isLiked(img)
                                     ? Icons.favorite
                                     : Icons.favorite_border,
                               ),
                               label: Text(
-                                provider.isLiked(provider.images[index])
-                                    ? "Unlike"
-                                    : "Like",
+                                provider.isLiked(img) ? "Unlike" : "Like",
                               ),
                             ),
                           )

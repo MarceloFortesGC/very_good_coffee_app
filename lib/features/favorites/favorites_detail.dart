@@ -16,6 +16,14 @@ class FavoritesDetail extends StatelessWidget {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(
+              Icons.chevron_left,
+              color: Colors.white,
+            )),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Hero(

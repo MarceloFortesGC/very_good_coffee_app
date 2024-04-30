@@ -15,14 +15,12 @@ class AnimatedLikeState extends State<AnimatedLike> {
   @override
   void initState() {
     super.initState();
-    // Inicia a animação de fade in imediatamente
-    Timer(const Duration(milliseconds: 100), () {
+    Timer(const Duration(milliseconds: 50), () {
       setState(() {
         _opacity = 1.0;
       });
     });
-    // Inicia a animação de fade out após 500ms
-    Timer(const Duration(milliseconds: 600), () {
+    Timer(const Duration(milliseconds: 550), () {
       setState(() {
         _opacity = 0.0;
       });

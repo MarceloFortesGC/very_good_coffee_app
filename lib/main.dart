@@ -39,6 +39,11 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Point Panther',
           ),
         ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            textStyle: const TextStyle(fontFamily: 'Celias'),
+          ),
+        ),
         progressIndicatorTheme:
             const ProgressIndicatorThemeData(color: Colors.white),
         dividerColor: Colors.transparent,
