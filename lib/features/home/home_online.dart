@@ -9,7 +9,8 @@ import 'package:very_good_coffee_app/features/shared/image_with_loader.dart';
 import 'package:very_good_coffee_app/features/providers/images_provider.dart';
 
 class HomeOnline extends StatefulWidget {
-  const HomeOnline({super.key});
+  const HomeOnline({super.key, required this.loadData});
+  final void Function() loadData;
 
   @override
   State<HomeOnline> createState() => _HomeOnlineState();
@@ -115,15 +116,23 @@ class _HomeOnlineState extends State<HomeOnline> {
                   child: PageView.builder(
                     controller: controller,
                     itemCount: provider.images.length,
+                    onPageChanged: (value) {
+                      if (value >= provider.images.length - 5) {
+                        widget.loadData();
+                      }
+                    },
                     itemBuilder: (context, index) {
                       final img = provider.images[index];
 
                       return Stack(
                         children: [
                           Center(
-                            child: ImageWithLoader(
-                              image: img,
-                              onDoubleTap: () => _onLike(img),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ImageWithLoader(
+                                image: img,
+                                onDoubleTap: () => _onLike(img),
+                              ),
                             ),
                           ),
                           Positioned(

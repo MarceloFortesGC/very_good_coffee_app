@@ -21,6 +21,12 @@ class _HomePageState extends State<HomePage> {
     Provider.of<ImagesProvider>(context, listen: false).getLikedImagesOffline();
   }
 
+  void _precacheImages(List<String> imageUrls) {
+    for (String url in imageUrls) {
+      precacheImage(NetworkImage(url), context);
+    }
+  }
+
   Future<void> _getData() async {
     final imgProvider = Provider.of<ImagesProvider>(context, listen: false);
     final connectionProvider =
@@ -36,6 +42,7 @@ class _HomePageState extends State<HomePage> {
         connectionProvider.setHasConnection = true;
         _firstLoading = false;
         imgProvider.addImages(value);
+        _precacheImages(value);
         setState(() {});
       });
     } catch (e) {
@@ -59,9 +66,9 @@ class _HomePageState extends State<HomePage> {
       child: _firstLoading
           ? const Center(child: CircularProgressIndicator())
           : context.watch<ConnectionProvider>().getHasConnection
-              ? const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: HomeOnline(),
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: HomeOnline(loadData: () => _getData()),
                 )
               : HomeOffline(
                   onTapTryAgain: _getData,
