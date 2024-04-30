@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:very_good_coffee_app/features/details/details_image_model.dart';
 
 class ImagesProvider with ChangeNotifier {
-  final List<DetailsImageModel> _images = [];
-  List<DetailsImageModel> get images => _images;
-  void addImages(List<DetailsImageModel> imgList) {
+  final List<String> _images = [];
+  List<String> get images => _images;
+  void addImages(List<String> imgList) {
     _images.addAll(imgList);
     notifyListeners();
+  }
+
+  final List<String> _likedImages = [];
+  List<String> get likedImages => _likedImages;
+  void toggleLikedImage(String img) {
+    if (likedImages.contains(img)) {
+      _likedImages.remove(img);
+    } else {
+      _likedImages.add(img);
+    }
+    notifyListeners();
+  }
+
+  bool isLiked(String image) {
+    return _likedImages.contains(image);
   }
 }

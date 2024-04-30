@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:very_good_coffee_app/features/body/application_body.dart';
 import 'package:very_good_coffee_app/features/home/home_page.dart';
 import 'package:very_good_coffee_app/features/shared/images_provider.dart';
 
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       ),
       home: ChangeNotifierProvider(
         create: (_) => ImagesProvider(),
-        child: const HomePage(),
+        child: const ApplicationBody(),
       ),
     );
   }

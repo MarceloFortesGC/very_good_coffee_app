@@ -17,6 +17,8 @@ class _HomePageState extends State<HomePage> {
   bool _firstLoading = true;
   bool _loading = true;
 
+  final _controller = PageController();
+
   Future<void> _getData() async {
     setState(() => _loading = true);
     await _service.getListImageHomePage().then((value) {
@@ -52,39 +54,48 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(elevation: 0, title: const Text("Very Good Coffee App")),
-        body: Consumer<ImagesProvider>(builder: (context, provider, child) {
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: Consumer<ImagesProvider>(
+        builder: (context, provider, child) {
           return _firstLoading
               ? const Center(child: CircularProgressIndicator())
-              : CustomScrollView(
-                  controller: _scrollController,
-                  slivers: <Widget>[
-                    SliverGrid(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                      ),
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          return ImageWithLoader(image: provider.images[index]);
-                        },
-                        childCount: provider.images.length,
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: _loading
-                          ? Container(
-                              padding: const EdgeInsets.all(20),
-                              alignment: Alignment.center,
-                              child: const CircularProgressIndicator(),
-                            )
-                          : const SizedBox(),
-                    ),
-                  ],
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: PageView.builder(
+                    controller: _controller,
+                    itemCount: provider.images.length,
+                    itemBuilder: (context, index) {
+                      return Stack(
+                        children: [
+                          Center(
+                            child: ImageWithLoader(
+                              image: provider.images[index],
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 32,
+                            right: 16,
+                            child: TextButton.icon(
+                              onPressed: () {
+                                provider
+                                    .toggleLikedImage(provider.images[index]);
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor: const Color(0xFFA26334),
+                                foregroundColor: Colors.white,
+                              ),
+                              icon: Icon(Icons.favorite_border),
+                              label: const Text("Save"),
+                            ),
+                          )
+                        ],
+                      );
+                    },
+                  ),
                 );
-        }));
+        },
+      ),
+    );
   }
 }
