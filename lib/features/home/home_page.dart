@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:very_good_coffee_app/features/shared/custom_colors.dart';
 import 'package:very_good_coffee_app/features/shared/image_with_loader.dart';
 import 'package:very_good_coffee_app/features/home/home_service.dart';
 import 'package:very_good_coffee_app/features/shared/images_provider.dart';
@@ -83,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                             provider.toggleLikedImage(provider.images[index]);
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: const Color(0xFFA26334),
+                            backgroundColor: CustomColors.secondaryColor,
                             foregroundColor: Colors.white,
                           ),
                           icon: Icon(
