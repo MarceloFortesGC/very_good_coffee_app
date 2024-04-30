@@ -19,6 +19,10 @@ class _HomePageState extends State<HomePage> {
 
   final _controller = PageController();
 
+  void _getLikedImages() async {
+    Provider.of<ImagesProvider>(context, listen: false).getLikedImagesOffline();
+  }
+
   Future<void> _getData() async {
     setState(() => _loading = true);
     await _service.getListImageHomePage().then((value) {
@@ -47,6 +51,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    _getLikedImages();
     super.initState();
     _scrollController.addListener(_onScroll);
     _getData();
@@ -54,48 +59,46 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<ImagesProvider>();
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
-      child: Consumer<ImagesProvider>(
-        builder: (context, provider, child) {
-          return _firstLoading
-              ? const Center(child: CircularProgressIndicator())
-              : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: PageView.builder(
-                    controller: _controller,
-                    itemCount: provider.images.length,
-                    itemBuilder: (context, index) {
-                      return Stack(
-                        children: [
-                          Center(
-                            child: ImageWithLoader(
-                              image: provider.images[index],
-                            ),
+      child: _firstLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: PageView.builder(
+                controller: _controller,
+                itemCount: provider.images.length,
+                itemBuilder: (context, index) {
+                  return Stack(
+                    children: [
+                      Center(
+                        child: ImageWithLoader(image: provider.images[index]),
+                      ),
+                      Positioned(
+                        bottom: 32,
+                        right: 16,
+                        child: TextButton.icon(
+                          onPressed: () {
+                            provider.toggleLikedImage(provider.images[index]);
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: const Color(0xFFA26334),
+                            foregroundColor: Colors.white,
                           ),
-                          Positioned(
-                            bottom: 32,
-                            right: 16,
-                            child: TextButton.icon(
-                              onPressed: () {
-                                provider
-                                    .toggleLikedImage(provider.images[index]);
-                              },
-                              style: TextButton.styleFrom(
-                                backgroundColor: const Color(0xFFA26334),
-                                foregroundColor: Colors.white,
-                              ),
-                              icon: Icon(Icons.favorite_border),
-                              label: const Text("Save"),
-                            ),
-                          )
-                        ],
-                      );
-                    },
-                  ),
-                );
-        },
-      ),
+                          icon: Icon(
+                            provider.isLiked(provider.images[index])
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                          ),
+                          label: const Text("Save"),
+                        ),
+                      )
+                    ],
+                  );
+                },
+              ),
+            ),
     );
   }
 }

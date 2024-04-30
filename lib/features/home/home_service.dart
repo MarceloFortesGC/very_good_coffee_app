@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:uuid/uuid.dart';
 
 class HomeService {
   final dio = Dio();
-  var uuid = const Uuid();
   final urlRandomData = 'https://coffee.alexflipnote.dev/random.json';
 
   Future<List<String>> getListImageHomePage() async {

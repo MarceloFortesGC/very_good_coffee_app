@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:very_good_coffee_app/features/body/application_body.dart';
-import 'package:very_good_coffee_app/features/home/home_page.dart';
+import 'package:very_good_coffee_app/features/shared/custom_colors.dart';
 import 'package:very_good_coffee_app/features/shared/images_provider.dart';
 
 void main() {
@@ -13,18 +13,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFF111111);
-
     return MaterialApp(
       title: 'Very Good Coffee App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
-        scaffoldBackgroundColor: primaryColor,
+        colorScheme: ColorScheme.fromSeed(seedColor: CustomColors.primaryColor),
+        scaffoldBackgroundColor: CustomColors.primaryColor,
         appBarTheme: const AppBarTheme(
-          backgroundColor: primaryColor,
+          backgroundColor: CustomColors.primaryColor,
           foregroundColor: Colors.white,
           elevation: 0,
+        ),
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(color: Colors.white),
         ),
         progressIndicatorTheme:
             const ProgressIndicatorThemeData(color: Colors.white),
