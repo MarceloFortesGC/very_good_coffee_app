@@ -34,6 +34,7 @@ class FavoritesDetail extends StatelessWidget {
                   child: ImageWithLoader(
                     image: url,
                     onDoubleTap: onLike,
+                    key: const Key('favoritesLikebleImg'),
                   ),
                 ),
                 Positioned(

@@ -6,6 +6,7 @@ void main() {
     test('getListImageHomePage returns a list of image URLs', () async {
       final result = await HomeService().getListImageHomePage();
       expect(result.length, 10);
+      expect(result.first, isA<String>());
     });
   });
 }

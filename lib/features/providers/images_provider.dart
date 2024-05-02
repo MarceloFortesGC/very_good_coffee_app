@@ -28,7 +28,7 @@ class ImagesProvider with ChangeNotifier {
     return _likedImages.contains(image);
   }
 
-  void getLikedImagesOffline() async {
+  Future<void> getLikedImagesOffline() async {
     _likedImages.addAll((await _prefs).getStringList('liked') ?? []);
     notifyListeners();
   }

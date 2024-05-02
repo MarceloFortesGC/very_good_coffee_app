@@ -1,29 +1,79 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:very_good_coffee_app/features/providers/images_provider.dart';
 
-import '../mocks/mock_shared_preferences.dart';
-
 void main() {
+  List<String> imgs = ['img1', 'img2', 'img3'];
+  List<String> likedImgs = ['img1', 'img3'];
+
   group('ImagesProvider Tests', () {
-    late MockSharedPreferences mockPrefs;
     late ImagesProvider imagesProvider;
 
+    Future<void> setupSharedPreferences(List<String> likedImages) async {
+      SharedPreferences.setMockInitialValues({'liked': likedImages});
+    }
+
     setUp(() {
-      mockPrefs = MockSharedPreferences();
-      SharedPreferences.setMockInitialValues({});
+      setupSharedPreferences([]);
       imagesProvider = ImagesProvider();
     });
 
-    test('addImages adds images and notifies listeners', () {
-      var images = ['img1', 'img2'];
+    test('add images to home', () {
+      imagesProvider.addImages(imgs);
+      expect(imagesProvider.images, containsAll(imgs));
+    });
 
-      imagesProvider.addListener(() {
-        expect(imagesProvider.images, containsAll(images));
+    test('add image to liked images', () {
+      for (String e in imgs) {
+        imagesProvider.toggleLikedImage(e);
+      }
+      expect(imagesProvider.likedImages, containsAll(imgs));
+    });
+
+    test('like and unlike image', () async {
+      // like image
+      imagesProvider.toggleLikedImage(imgs.first);
+      await Future.delayed(Durations.short1).then((value) {
+        // unlike image
+        imagesProvider.toggleLikedImage(imgs.first);
       });
+      expect(imagesProvider.likedImages, isEmpty);
+    });
 
-      imagesProvider.addImages(images);
+    test('unlike specific image', () {
+      for (String e in imgs) {
+        imagesProvider.toggleLikedImage(e);
+      }
+
+      imagesProvider.toggleLikedImage('img2');
+      expect(imagesProvider.likedImages, isNot(contains('img2')));
+    });
+
+    test('check if image is liked', () {
+      imagesProvider.toggleLikedImage('img2');
+      expect(imagesProvider.isLiked('img2'), isTrue);
+    });
+
+    test('check if image is unliked', () {
+      expect(imagesProvider.isLiked('img2'), isFalse);
+    });
+
+    test('start project with no images on SharedPreferences', () {
+      setupSharedPreferences([]);
+      expect(imagesProvider.likedImages, isEmpty);
+    });
+
+    test(
+        'getLikedImagesOffline should load liked images from SharedPreferences',
+        () async {
+      setupSharedPreferences(likedImgs);
+
+      imagesProvider = ImagesProvider();
+
+      await imagesProvider.getLikedImagesOffline();
+
+      expect(imagesProvider.likedImages, containsAll(likedImgs));
     });
   });
 }
