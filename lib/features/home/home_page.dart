@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:very_good_coffee_app/features/home/home_loader.dart';
 import 'package:very_good_coffee_app/features/home/home_offline.dart';
 import 'package:very_good_coffee_app/features/home/home_online.dart';
 import 'package:very_good_coffee_app/features/home/home_service.dart';
@@ -62,15 +63,17 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: const Key('onlineOrOfflineWrapper'),
       color: Theme.of(context).scaffoldBackgroundColor,
       child: _firstLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const HomeLoader()
           : context.watch<ConnectionProvider>().getHasConnection
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: HomeOnline(loadData: () => _getData()),
+              ? HomeOnline(
+                  key: const Key('homeOnline'),
+                  loadData: () => _getData(),
                 )
               : HomeOffline(
+                  key: const Key('homeOffline'),
                   onTapTryAgain: _getData,
                   loading: _firstLoading,
                 ),

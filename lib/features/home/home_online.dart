@@ -104,63 +104,67 @@ class _HomeOnlineState extends State<HomeOnline> {
       child: Scaffold(
         body: Stack(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Divider(),
-                Text(
-                  'Very Good Coffee App',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                Expanded(
-                  child: PageView.builder(
-                    controller: controller,
-                    itemCount: provider.images.length,
-                    onPageChanged: (value) {
-                      if (value >= provider.images.length - 5) {
-                        widget.loadData();
-                      }
-                    },
-                    itemBuilder: (context, index) {
-                      final img = provider.images[index];
-
-                      return Stack(
-                        children: [
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ImageWithLoader(
-                                image: img,
-                                onDoubleTap: () => _onLike(img),
-                                key: const Key('homeLikebleImg'),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 32,
-                            right: 16,
-                            child: TextButton.icon(
-                              onPressed: _savingImg ? null : () => _onLike(img),
-                              style: TextButton.styleFrom(
-                                backgroundColor: CustomColors.secondaryColor,
-                                foregroundColor: Colors.white,
-                              ),
-                              icon: Icon(
-                                provider.isLiked(img)
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                              ),
-                              label: Text(
-                                provider.isLiked(img) ? "Unlike" : "Like",
-                              ),
-                            ),
-                          )
-                        ],
-                      );
-                    },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Divider(),
+                  Text(
+                    'Very Good Coffee App',
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: PageView.builder(
+                      controller: controller,
+                      itemCount: provider.images.length,
+                      onPageChanged: (value) {
+                        if (value >= provider.images.length - 5) {
+                          widget.loadData();
+                        }
+                      },
+                      itemBuilder: (context, index) {
+                        final img = provider.images[index];
+
+                        return Stack(
+                          children: [
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ImageWithLoader(
+                                  image: img,
+                                  onDoubleTap: () => _onLike(img),
+                                  key: const Key('homeLikebleImg'),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 32,
+                              right: 16,
+                              child: TextButton.icon(
+                                onPressed:
+                                    _savingImg ? null : () => _onLike(img),
+                                style: TextButton.styleFrom(
+                                  backgroundColor: CustomColors.secondaryColor,
+                                  foregroundColor: Colors.white,
+                                ),
+                                icon: Icon(
+                                  provider.isLiked(img)
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                ),
+                                label: Text(
+                                  provider.isLiked(img) ? "Unlike" : "Like",
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

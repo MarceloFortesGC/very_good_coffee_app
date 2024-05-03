@@ -6,11 +6,11 @@ import 'package:very_good_coffee_app/features/shared/custom_colors.dart';
 import 'package:very_good_coffee_app/features/providers/images_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const VeryGoodCoffeeApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class VeryGoodCoffeeApp extends StatelessWidget {
+  const VeryGoodCoffeeApp({super.key});
 
   @override
   Widget build(BuildContext context) {

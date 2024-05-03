@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:very_good_coffee_app/features/shared/custom_colors.dart';
-import 'package:very_good_coffee_app/features/shared/error_msg.dart';
+import 'package:very_good_coffee_app/features/shared/image_error.dart';
 import 'package:very_good_coffee_app/features/shared/skeleton.dart';
 
 class ImageWithLoader extends StatefulWidget {
@@ -29,31 +28,21 @@ class _ImageWithLoaderState extends State<ImageWithLoader> {
         padding: widget.padding ?? EdgeInsets.zero,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: Stack(
-            children: [
-              SkeletonCard(width: double.infinity, height: size.height * .5),
-              Image.network(
-                widget.image,
-                fit: BoxFit.cover,
+          child: Image.network(
+            widget.image,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: size.height * .5,
+            errorBuilder: (context, error, stackTrace) {
+              return const ImageError();
+            },
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return SkeletonCard(
                 width: double.infinity,
                 height: size.height * .5,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: double.infinity,
-                    height: size.height * .5,
-                    color: CustomColors.secondaryColor,
-                    child: const ErrorMsg(),
-                  );
-                },
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return SkeletonCard(
-                    width: double.infinity,
-                    height: size.height * .5,
-                  );
-                },
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),

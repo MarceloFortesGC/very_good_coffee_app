@@ -20,3 +20,15 @@ $ flutter run
 ```
 
 _* Very Good Coffee App was tested and develop to mobile._
+
+---
+
+## Running Tests 🧪
+
+To run all unit and widget tests use the following command:
+
+```sh
+$ flutter test --coverage --test-randomize-ordering-seed random
+```
+
+---
