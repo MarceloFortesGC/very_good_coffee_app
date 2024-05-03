@@ -1,5 +1,5 @@
 # Very Good Coffee App
-![Very Good Coffee App Banner]('lib/assets/github_banner.png?raw=true')
+![Very Good Coffee App Banner](lib/assets/github_banner.png)
 
 A Coffee Photos app made with [Flutter]('https://flutter.dev/')!
 
