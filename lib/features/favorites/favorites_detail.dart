@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:very_good_coffee_app/features/favorites/favorite_image_cached.dart';
 import 'package:very_good_coffee_app/features/shared/custom_colors.dart';
-import 'package:very_good_coffee_app/features/shared/image_with_loader.dart';
 import 'package:very_good_coffee_app/features/providers/images_provider.dart';
 
 class FavoritesDetail extends StatelessWidget {
@@ -30,13 +30,7 @@ class FavoritesDetail extends StatelessWidget {
             tag: url,
             child: Stack(
               children: [
-                Center(
-                  child: ImageWithLoader(
-                    image: url,
-                    onDoubleTap: onLike,
-                    key: const Key('favoritesLikebleImg'),
-                  ),
-                ),
+                Center(child: FavoriteImageCached(image: url)),
                 Positioned(
                   bottom: 32,
                   right: 16,
